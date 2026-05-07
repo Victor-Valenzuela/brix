@@ -72,6 +72,17 @@ El juego es instalable como app en celulares y PC. Al instalarlo desde un navega
 - Funciona offline
 - Icono en la pantalla de inicio
 
+### Fullscreen en Android
+
+Para jugar sin la barra de estado (hora, wifi, batería), instala la app desde **Brave**. Chrome no soporta la Fullscreen API dentro de PWAs instaladas — es una limitación del navegador, no del código. Brave sí la implementa, por lo que al primer tap la app entra en pantalla completa.
+
+| Navegador    | Instalación              | Fullscreen | Badge en icono      |
+| ------------ | ------------------------ | ---------- | ------------------- |
+| Chrome       | ✅                       | ❌         | No                  |
+| Brave        | ✅                       | ✅         | Sí (badge de Brave) |
+| Opera        | ❌ (solo acceso directo) | —          | —                   |
+| Safari (iOS) | ✅                       | ❌         | No                  |
+
 ## 📁 Estructura
 
 ```
