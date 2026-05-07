@@ -38,7 +38,7 @@
 
 <div
   class="grid gap-[2px] p-1 rounded-sm"
-  style="grid-template-columns: repeat({COLS}, 1fr); grid-template-rows: repeat({ROWS}, 1fr); background: #4b5563; height: 90dvh; aspect-ratio: 8/6;"
+  style="grid-template-columns: repeat({COLS}, 1fr); grid-template-rows: repeat({ROWS}, 1fr); background: #4b5563; height: 90dvh; max-height: 500px; aspect-ratio: 8/6;"
 >
   {#each Array(ROWS) as _, row}
     {#each Array(COLS) as _, col}
