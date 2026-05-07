@@ -44,9 +44,18 @@ import '../styles/global.css';
       if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('/sw.js');
       }
-      // Forzar landscape via Screen Orientation API cuando esté disponible
+      // Forzar landscape
       if (screen.orientation && screen.orientation.lock) {
         screen.orientation.lock('landscape').catch(() => {});
+      }
+      // Fullscreen al primer tap (solo en PWA instalada)
+      if (window.matchMedia('(display-mode: standalone)').matches || window.matchMedia('(display-mode: fullscreen)').matches) {
+        document.addEventListener('click', function goFull() {
+          if (document.documentElement.requestFullscreen) {
+            document.documentElement.requestFullscreen().catch(() => {});
+          }
+          document.removeEventListener('click', goFull);
+        }, { once: true });
       }
     </script>
   </body>

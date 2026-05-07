@@ -11,6 +11,9 @@
 
     </h1>
     <p class="text-gray-400 mt-1 text-sm tracking-widest uppercase">Construye o destruye</p>
+    <div class="text-gray-500 text-xs max-w-xs text-center">
+      Alinea piezas 4 para ganar!
+    </div>
   </div>
 
   <div class="flex flex-col gap-3 w-full max-w-xs">
@@ -37,9 +40,5 @@
       <span class="block">Símbolos vs Colores</span>
       <span class="block text-[10px] text-gray-400 font-normal normal-case mt-0.5">Un jugador con símbolos, otro con colores</span>
     </button>
-  </div>
-
-  <div class="text-gray-500 text-xs max-w-xs text-center">
-    Alinea piezas 4 en vertical, horizontal o diagonal para ganar!
   </div>
 </div>
