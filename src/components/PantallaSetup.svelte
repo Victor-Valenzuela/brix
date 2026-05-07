@@ -23,10 +23,8 @@
   };
 </script>
 
-<div class="flex flex-col items-center justify-center min-h-[100dvh] gap-5 p-4">
-  <p class="text-sm text-gray-400 uppercase tracking-wider">{modeLabels[mode]}</p>
-  <h2 class="text-2xl font-bold">¿Quién juega?</h2>
-
+<div class="flex flex-col items-center justify-center min-h-[100dvh] gap-5 p-2">
+  <h2 class="text-xl font-bold">¿Quién juega?</h2>
   <div class="flex flex-col gap-3 w-full max-w-xs">
     <div>
       <label class="text-xs text-orange-400 uppercase tracking-wider block mb-1">Jugador 1 (empieza)</label>
@@ -59,7 +57,7 @@
 
   <button
     onclick={start}
-    class="px-8 py-3 bg-green-600 hover:bg-green-500 text-white font-bold text-sm uppercase tracking-wider rounded-sm transition-colors cursor-pointer"
+    class="px-8 py-2 bg-green-600 hover:bg-green-500 text-white font-bold text-sm uppercase tracking-wider rounded-sm transition-colors cursor-pointer"
   >
     Empezar
   </button>
