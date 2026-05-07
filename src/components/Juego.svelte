@@ -1,13 +1,16 @@
 <script>
   import { createBoard, placeBrick, checkWin, getBrickConfigs, getValidPositions, canPlace } from '../lib/gameLogic.js';
   import { sfxSelect, sfxPlace, sfxWin, sfxDraw } from '../lib/sfx.js';
+  import { saveGameState, loadGameState, clearGameState } from '../lib/storage.js';
   import Tablero from './Tablero.svelte';
   import SelectorLadrillo from './SelectorLadrillo.svelte';
 
   let { mode, players, onRestart } = $props();
 
-  let board = $state(createBoard());
-  let currentPlayer = $state(1);
+  // Cargar estado guardado o crear nuevo
+  const saved = loadGameState();
+  let board = $state(saved ? saved.board : createBoard());
+  let currentPlayer = $state(saved ? saved.currentPlayer : 1);
   let selectedConfig = $state(null);
   let validPositions = $state([]);
   let lastPlaced = $state(null);
@@ -30,6 +33,7 @@
   }
 
   function replay() {
+    clearGameState();
     board = createBoard();
     currentPlayer = 1;
     selectedConfig = null;
@@ -61,6 +65,7 @@
       result = check;
       selectedConfig = null;
       validPositions = [];
+      clearGameState();
       if (check.type === 'draw') {
         sfxDraw();
       } else {
@@ -72,6 +77,7 @@
     currentPlayer = currentPlayer === 1 ? 2 : 1;
     selectedConfig = null;
     validPositions = [];
+    saveGameState({ board, currentPlayer, mode, players });
   }
 
   function getWinMessage() {

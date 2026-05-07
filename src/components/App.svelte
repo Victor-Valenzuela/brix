@@ -1,4 +1,5 @@
 <script>
+  import { loadGameState, clearGameState } from '../lib/storage.js';
   import PantallaInicio from './PantallaInicio.svelte';
   import PantallaSetup from './PantallaSetup.svelte';
   import Juego from './Juego.svelte';
@@ -6,6 +7,14 @@
   let screen = $state('inicio');
   let gameMode = $state(null);
   let players = $state(['Jugador 1', 'Jugador 2']);
+
+  // Retomar partida si hay estado guardado
+  const saved = loadGameState();
+  if (saved) {
+    gameMode = saved.mode;
+    players = saved.players;
+    screen = 'juego';
+  }
 
   function selectMode(mode) {
     gameMode = mode;
@@ -18,6 +27,7 @@
   }
 
   function restart() {
+    clearGameState();
     screen = 'inicio';
     gameMode = null;
     players = ['Jugador 1', 'Jugador 2'];
