@@ -1,0 +1,63 @@
+@import "tailwindcss";
+
+@custom-variant portrait {
+    @media (orientation: portrait) {
+        @slot;
+    }
+}
+
+@custom-variant landscape {
+    @media (orientation: landscape) {
+        @slot;
+    }
+}
+
+:root {
+    --orange: #e85d04;
+    --orange-light: #f48c06;
+    --blue: #0077b6;
+    --blue-light: #0096c7;
+    --cement: #6b7280;
+    --cement-light: #9ca3af;
+    --cement-dark: #374151;
+    --bg: #1f2937;
+}
+
+body {
+    background-color: var(--bg);
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.brix-title {
+    font-family: 'Luckiest Guy', cursive;
+}
+
+.brix-logo {
+    font-family: 'Luckiest Guy', cursive;
+    position: relative;
+    display: inline-block;
+    letter-spacing: -0.07em;
+    z-index: 1;
+}
+
+.brix-logo::before {
+    content: attr(data-text);
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: -1;
+    color: white;
+    -webkit-text-stroke: 18px white;
+    paint-order: stroke fill;
+    letter-spacing: -0.07em;
+    text-shadow:
+        4px 4px 0 rgba(0, 0, 0, 0.15),
+        5px 5px 0 rgba(0, 0, 0, 0.1);
+}
+
+.brix-logo::after {
+    display: none;
+}
