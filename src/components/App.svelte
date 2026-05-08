@@ -10,8 +10,6 @@
   let isPortrait = $state(false);
   let showContinue = $state(false);
 
-  const saved = loadGameState();
-
   // Detectar orientación
   if (typeof window !== 'undefined') {
     const mq = window.matchMedia('(orientation: portrait) and (max-width: 1024px)');
@@ -28,7 +26,7 @@
 
   function selectMode(mode) {
     gameMode = mode;
-    // Si hay partida guardada en este modo, preguntar
+    const saved = loadGameState();
     if (saved && saved.mode === mode) {
       showContinue = true;
     } else {
@@ -38,9 +36,22 @@
   }
 
   function continueGame() {
-    gameMode = saved.mode;
-    players = saved.players;
-    enterFullscreenAndPlay();
+    const saved = loadGameState();
+    if (saved) {
+      gameMode = saved.mode;
+      players = saved.players;
+    }
+    screen = 'juego';
+    setTimeout(() => {
+      const isMobile = navigator.maxTouchPoints > 0 && window.innerWidth < 1024;
+      if (isMobile && document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen().then(() => {
+          if (screen.orientation && screen.orientation.lock) {
+            screen.orientation.lock('landscape').catch(() => {});
+          }
+        }).catch(() => {});
+      }
+    }, 50);
   }
 
   function newGame() {
@@ -51,27 +62,24 @@
 
   function startGame(config) {
     players = config.players;
-    enterFullscreenAndPlay();
-  }
-
-  function enterFullscreenAndPlay() {
-    const isMobile = navigator.maxTouchPoints > 0 && window.innerWidth < 1024;
-    if (isMobile && document.documentElement.requestFullscreen) {
-      document.documentElement.requestFullscreen().then(() => {
-        if (screen.orientation && screen.orientation.lock) {
-          screen.orientation.lock('landscape').catch(() => {});
-        }
-      }).catch(() => {});
-    }
     screen = 'juego';
+    setTimeout(() => {
+      const isMobile = navigator.maxTouchPoints > 0 && window.innerWidth < 1024;
+      if (isMobile && document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen().then(() => {
+          if (screen.orientation && screen.orientation.lock) {
+            screen.orientation.lock('landscape').catch(() => {});
+          }
+        }).catch(() => {});
+      }
+    }, 50);
   }
 
   function restart() {
-    clearGameState();
-    showContinue = false;
     screen = 'inicio';
     gameMode = null;
     players = ['Jugador 1', 'Jugador 2'];
+    showContinue = false;
     if (document.fullscreenElement) {
       document.exitFullscreen().then(() => {
         if (screen.orientation && screen.orientation.lock) {
