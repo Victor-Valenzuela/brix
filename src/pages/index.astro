@@ -9,7 +9,6 @@ import '../styles/global.css';
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#ea580c" />
     <meta name="mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="Brix" />
     <link rel="manifest" href="/manifest.json" />
     <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
@@ -20,42 +19,12 @@ import '../styles/global.css';
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Luckiest+Guy&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
     <title>Brix</title>
-    <style>
-      @media (orientation: portrait) and (max-width: 1024px) {
-        .rotate-message { display: flex; }
-        .game-container { display: none; }
-      }
-      @media (orientation: landscape), (min-width: 1025px) {
-        .rotate-message { display: none; }
-        .game-container { display: block; }
-      }
-    </style>
   </head>
   <body>
-    <div class="rotate-message fixed inset-0 bg-gray-900 flex items-center justify-center flex-col gap-4 text-white z-50">
-      <span class="text-5xl">📱</span>
-      <p class="text-xl font-bold uppercase tracking-wider">Gira tu dispositivo</p>
-      <p class="text-gray-400 text-sm">Instala la app para jugar siempre en horizontal</p>
-    </div>
-    <div class="game-container">
-      <App client:load />
-    </div>
+    <App client:load />
     <script is:inline>
       if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('/sw.js');
-      }
-      // Forzar landscape
-      if (screen.orientation && screen.orientation.lock) {
-        screen.orientation.lock('landscape').catch(() => {});
-      }
-      // Fullscreen al primer tap (solo en PWA instalada)
-      if (window.matchMedia('(display-mode: standalone)').matches || window.matchMedia('(display-mode: fullscreen)').matches) {
-        document.addEventListener('click', function goFull() {
-          if (document.documentElement.requestFullscreen) {
-            document.documentElement.requestFullscreen().catch(() => {});
-          }
-          document.removeEventListener('click', goFull);
-        }, { once: true });
       }
     </script>
   </body>

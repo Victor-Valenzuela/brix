@@ -7,6 +7,17 @@
   function start() {
     const p1 = player1.trim() || 'Jugador 1';
     const p2 = player2.trim() || 'Jugador 2';
+
+    // Fullscreen + landscape en móvil
+    const isMobile = navigator.maxTouchPoints > 0 && window.innerWidth < 1024;
+    if (isMobile && document.documentElement.requestFullscreen) {
+      document.documentElement.requestFullscreen().then(() => {
+        if (screen.orientation && screen.orientation.lock) {
+          screen.orientation.lock('landscape').catch(() => {});
+        }
+      }).catch(() => {});
+    }
+
     onStart({ players: [p1, p2] });
   }
 
