@@ -2,7 +2,7 @@
     "name": "Brix",
     "short_name": "Brix",
     "description": "Construye o destruye — Juego de estrategia con ladrillos",
-    "start_url": "/",
+    "start_url": "/?v=2",
     "display": "standalone",
     "orientation": "portrait",
     "background_color": "#1f2937",
