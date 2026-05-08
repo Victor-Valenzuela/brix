@@ -22,6 +22,15 @@
     const mq = window.matchMedia('(orientation: portrait) and (max-width: 1024px)');
     isPortrait = mq.matches;
     mq.addEventListener('change', (e) => { isPortrait = e.matches; });
+
+    // Si sale de fullscreen durante partida, volver a inicio
+    document.addEventListener('fullscreenchange', () => {
+      if (!document.fullscreenElement && screen === 'juego') {
+        screen = 'inicio';
+        gameMode = null;
+        players = ['Jugador 1', 'Jugador 2'];
+      }
+    });
   }
 
   function selectMode(mode) {
