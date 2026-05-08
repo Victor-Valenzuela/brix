@@ -1,5 +1,5 @@
 <script>
-  let { onStart } = $props();
+  let { onStart, hasSavedGame = false, onContinue = null } = $props();
 </script>
 
 <div class="flex flex-col items-center justify-center min-h-[100dvh] gap-6 p-4">
@@ -41,4 +41,13 @@
       <span class="block text-[10px] text-gray-400 font-normal normal-case mt-0.5">Un jugador con símbolos, otro con colores</span>
     </button>
   </div>
+
+  {#if hasSavedGame}
+    <button
+      onclick={onContinue}
+      class="px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white font-bold text-sm uppercase tracking-wider rounded-sm transition-colors cursor-pointer border-l-4 border-green-500 w-full max-w-xs"
+    >
+      <span class="block">▶ Continuar partida</span>
+    </button>
+  {/if}
 </div>
