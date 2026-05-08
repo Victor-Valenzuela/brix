@@ -8,13 +8,14 @@
   let gameMode = $state(null);
   let players = $state(['Jugador 1', 'Jugador 2']);
   let isPortrait = $state(false);
+  let hasSavedGame = $state(false);
 
-  // Retomar partida si hay estado guardado
+  // Verificar si hay partida guardada
   const saved = loadGameState();
   if (saved) {
+    hasSavedGame = true;
     gameMode = saved.mode;
     players = saved.players;
-    screen = 'juego';
   }
 
   // Detectar orientación
@@ -27,8 +28,6 @@
     document.addEventListener('fullscreenchange', () => {
       if (!document.fullscreenElement && screen === 'juego') {
         screen = 'inicio';
-        gameMode = null;
-        players = ['Jugador 1', 'Jugador 2'];
       }
     });
   }
@@ -38,6 +37,17 @@
     screen = 'setup';
   }
 
+  function continueGame() {
+    screen = 'juego';
+  }
+
+  function newGame() {
+    clearGameState();
+    hasSavedGame = false;
+    gameMode = null;
+    screen = 'inicio';
+  }
+
   function startGame(config) {
     players = config.players;
     screen = 'juego';
@@ -45,10 +55,10 @@
 
   function restart() {
     clearGameState();
+    hasSavedGame = false;
     screen = 'inicio';
     gameMode = null;
     players = ['Jugador 1', 'Jugador 2'];
-    // Salir de fullscreen y volver a portrait
     if (document.fullscreenElement) {
       document.exitFullscreen().then(() => {
         if (screen.orientation && screen.orientation.lock) {
@@ -62,10 +72,43 @@
     screen = 'inicio';
     gameMode = null;
   }
+
+  function enterFullscreenAndPlay() {
+    const isMobile = navigator.maxTouchPoints > 0 && window.innerWidth < 1024;
+    if (isMobile && document.documentElement.requestFullscreen) {
+      document.documentElement.requestFullscreen().then(() => {
+        if (screen.orientation && screen.orientation.lock) {
+          screen.orientation.lock('landscape').catch(() => {});
+        }
+      }).catch(() => {});
+    }
+    screen = 'juego';
+  }
 </script>
 
 {#if screen === 'inicio'}
-  <PantallaInicio onStart={selectMode} />
+  {#if hasSavedGame}
+    <div class="flex flex-col items-center justify-center min-h-[100dvh] gap-5 p-4">
+      <h1 class="text-4xl font-black tracking-tight uppercase">
+        <span class="text-orange-500">BR</span><span class="text-blue-500">IX</span>
+      </h1>
+      <p class="text-sm text-gray-400">Hay una partida en curso</p>
+      <button
+        onclick={enterFullscreenAndPlay}
+        class="px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white font-bold text-sm uppercase tracking-wider rounded-sm transition-all cursor-pointer"
+      >
+        Continuar partida
+      </button>
+      <button
+        onclick={newGame}
+        class="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-gray-300 text-xs uppercase tracking-wider rounded-sm transition-all cursor-pointer border border-gray-600"
+      >
+        Nueva partida
+      </button>
+    </div>
+  {:else}
+    <PantallaInicio onStart={selectMode} />
+  {/if}
 {:else if screen === 'setup'}
   <PantallaSetup mode={gameMode} onStart={startGame} onBack={backToModes} />
 {:else if screen === 'juego'}
