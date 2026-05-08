@@ -7,15 +7,9 @@
   let screen = $state('inicio');
   let gameMode = $state(null);
   let players = $state(['Jugador 1', 'Jugador 2']);
-  let isPortrait = $state(false);
   let showContinue = $state(false);
 
-  // Detectar orientación
   if (typeof window !== 'undefined') {
-    const mq = window.matchMedia('(orientation: portrait) and (max-width: 1024px)');
-    isPortrait = mq.matches;
-    mq.addEventListener('change', (e) => { isPortrait = e.matches; });
-
     document.addEventListener('fullscreenchange', () => {
       if (!document.fullscreenElement && screen === 'juego') {
         screen = 'inicio';
@@ -41,17 +35,7 @@
       gameMode = saved.mode;
       players = saved.players;
     }
-    screen = 'juego';
-    setTimeout(() => {
-      const isMobile = navigator.maxTouchPoints > 0 && window.innerWidth < 1024;
-      if (isMobile && document.documentElement.requestFullscreen) {
-        document.documentElement.requestFullscreen().then(() => {
-          if (screen.orientation && screen.orientation.lock) {
-            screen.orientation.lock('landscape').catch(() => {});
-          }
-        }).catch(() => {});
-      }
-    }, 50);
+    goFullscreenAndPlay();
   }
 
   function newGame() {
@@ -62,17 +46,19 @@
 
   function startGame(config) {
     players = config.players;
+    goFullscreenAndPlay();
+  }
+
+  function goFullscreenAndPlay() {
     screen = 'juego';
-    setTimeout(() => {
-      const isMobile = navigator.maxTouchPoints > 0 && window.innerWidth < 1024;
-      if (isMobile && document.documentElement.requestFullscreen) {
-        document.documentElement.requestFullscreen().then(() => {
-          if (screen.orientation && screen.orientation.lock) {
-            screen.orientation.lock('landscape').catch(() => {});
-          }
-        }).catch(() => {});
-      }
-    }, 50);
+    const isMobile = navigator.maxTouchPoints > 0 && window.innerWidth < 1024;
+    if (isMobile && document.documentElement.requestFullscreen) {
+      document.documentElement.requestFullscreen().then(() => {
+        if (screen.orientation && screen.orientation.lock) {
+          screen.orientation.lock('landscape').catch(() => {});
+        }
+      }).catch(() => {});
+    }
   }
 
   function restart() {
@@ -128,11 +114,5 @@
 {:else if screen === 'setup'}
   <PantallaSetup mode={gameMode} onStart={startGame} onBack={backToModes} />
 {:else if screen === 'juego'}
-  {#if isPortrait && !document.fullscreenElement}
-    <div class="flex items-center justify-center min-h-[100dvh] bg-gray-900">
-      <div class="w-8 h-8 border-3 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
-    </div>
-  {:else}
-    <Juego mode={gameMode} {players} onRestart={restart} />
-  {/if}
+  <Juego mode={gameMode} {players} onRestart={restart} />
 {/if}
